@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="A premium daily tracking application with customizable trackers, weighted scoring, streak counts, monthly calendar, and trend analytics.">
+    <title>Orbit Tracker</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar">
+            <div>
+                <div class="sidebar-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 2a10 10 0 0 1 10 10h-10V2z" opacity="0.3"></path><path d="M12 12L22 12" opacity="0.5"></path></svg>
+                    <span>Orbit</span>Tracker
+                </div>
+                <nav class="sidebar-menu">
+                    <a class="sidebar-item active" data-view="dashboard">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>
+                        Dashboard
+                    </a>
+                    <a class="sidebar-item" data-view="trends">
+                        <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                        Trends & Charts
+                    </a>
+                    <a class="sidebar-item" data-view="calendar">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        Calendar History
+                    </a>
+                    <a class="sidebar-item" data-view="rewards">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        Rewards Store
+                    </a>
+                    <a class="sidebar-item" data-view="trackers">
+                        <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        Manage Trackers
+                    </a>
+                    <a class="sidebar-item" data-view="config">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        Rules & Settings
+                    </a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <button class="btn-theme" id="theme-toggle-desktop" aria-label="Toggle Theme">
+                    <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Bottom Navigation for Mobile -->
+        <nav class="bottom-nav">
+            <a class="bottom-nav-item active" data-view="dashboard">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect></svg>
+                Home
+            </a>
+            <a class="bottom-nav-item" data-view="trends">
+                <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+                Trends
+            </a>
+            <a class="bottom-nav-item" data-view="calendar">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Calendar
+            </a>
+            <a class="bottom-nav-item" data-view="rewards">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                Rewards
+            </a>
+            <a class="bottom-nav-item" data-view="trackers">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                Trackers
+            </a>
+            <a class="bottom-nav-item" data-view="config">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                Settings
+            </a>
+        </nav>
+
+        <!-- Main Content Grid -->
+        <main class="main-content">
+            <!-- Top bar with View info and Date Picker -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="current-view-title">Dashboard</h1>
+                    <p id="sub-title">Track your daily orbit</p>
+                </div>
+                
+                <div class="controls-group">
+                    <!-- Parent Lock Button Status -->
+                    <button class="btn btn-secondary" id="btn-parent-lock-toggle" style="padding: 8px 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">
+                        <svg id="parent-lock-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <span id="parent-lock-text">Parent Lock Off</span>
+                    </button>
+
+                    <!-- Date Picker Navigation -->
+                    <div class="btn-secondary" style="display: flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: var(--radius-md);">
+                        <button id="btn-prev-day" class="btn-close" style="padding: 2px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </button>
+                        <span id="current-date-display" style="font-weight: 700; font-size: 0.9rem; min-width: 110px; text-align: center; cursor: pointer;">Today</span>
+                        <button id="btn-next-day" class="btn-close" style="padding: 2px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+
+                    <button class="btn-theme" id="theme-toggle-mobile" style="display: none;" aria-label="Toggle Theme">
+                        <svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW: DASHBOARD -->
+            <section id="view-dashboard" class="view-panel active">
+                <div class="dashboard-grid">
+                    <!-- Left: Daily Tracker Logging -->
+                    <div class="card" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="card-header" style="margin-bottom: 0.5rem;">
+                            <h2 class="card-title">Daily Tracker Checklist</h2>
+                            <span id="log-status-badge" style="font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: var(--radius-sm); background-color: var(--accent-bg); color: var(--accent);">Logged</span>
+                        </div>
+                        
+                        <!-- List of Trackers dynamically generated (will separate Positive & Negative) -->
+                        <div id="daily-trackers-container" class="trackers-section">
+                            <!-- JS will inject tracker groups here -->
+                        </div>
+
+                        <!-- Manual Rating Contribution -->
+                        <div class="manual-rating-card">
+                            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+                            <div class="slider-container">
+                                <div class="slider-header">
+                                    <span>Overall Day Rating</span>
+                                    <span id="manual-rating-value" style="color: var(--accent);">70/100</span>
+                                </div>
+                                <input type="range" id="manual-rating-slider" class="range-slider" min="0" max="100" value="70">
+                                <p style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; margin-top: 2px;">
+                                    Directly rate your day. Contributes to <span id="manual-weight-display">50</span>% of your score.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Score Ring and Quick Stats -->
+                    <div style="display: flex; flex-direction: column; gap: 2rem;">
+                        <!-- Score Ring Card -->
+                        <div class="card" style="text-align: center;">
+                            <h2 class="card-title" style="margin-bottom: 1.5rem;">Daily Score</h2>
+                            <div class="score-circle-container">
+                                <svg class="score-svg" viewBox="0 0 180 180">
+                                    <circle class="score-circle-bg" cx="90" cy="90" r="80"></circle>
+                                    <circle class="score-circle-progress" id="score-circle-progress" cx="90" cy="90" r="80"></circle>
+                                </svg>
+                                <div class="score-center-text">
+                                    <div class="score-value" id="score-circle-value">0</div>
+                                    <div class="score-label" id="score-circle-tier">Poor</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 1.5rem; font-weight: 500;" id="score-description">
+                                Log your trackers to calculate your daily orbit.
+                            </p>
+                        </div>
+
+                        <!-- Quick Stats Card -->
+                        <div class="card">
+                            <h2 class="card-title">Streaks & Status</h2>
+                            <div class="stats-row">
+                                <div class="stat-box">
+                                    <div class="stat-num" id="stat-current-streak">0</div>
+                                    <div class="stat-label">Current Streak</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-num" id="stat-best-streak">0</div>
+                                    <div class="stat-label">Best Streak</div>
+                                </div>
+                            </div>
+                            <div class="stats-row">
+                                <div class="stat-box">
+                                    <div class="stat-num" id="stat-month-avg">0%</div>
+                                    <div class="stat-label">Month Avg</div>
+                                </div>
+                                <div class="stat-box">
+                                    <div class="stat-num" id="stat-completion">0%</div>
+                                    <div class="stat-label">Tracker Comp.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: TRENDS -->
+            <section id="view-trends" class="view-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Score Performance Trend</h2>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary btn-sm" id="btn-trend-week" style="padding: 6px 12px; font-size: 0.8rem;">7 Days</button>
+                            <button class="btn btn-secondary btn-sm" id="btn-trend-month" style="padding: 6px 12px; font-size: 0.8rem;">30 Days</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" id="trend-chart-container">
+                        <!-- Custom SVG Chart will be injected here -->
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <h2 class="card-title" style="margin-bottom: 1rem;">Habit & Metric Insights</h2>
+                        <div id="insights-container" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Dynamically injected insights -->
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2 class="card-title" style="margin-bottom: 1rem;">Orbit Statistics</h2>
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                <span style="color: var(--text-secondary);">Highest Daily Score</span>
+                                <span id="stat-highest-score" style="font-weight: 800;">-</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                <span style="color: var(--text-secondary);">Lowest Daily Score</span>
+                                <span id="stat-lowest-score" style="font-weight: 800;">-</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                <span style="color: var(--text-secondary);">Total Days Tracked</span>
+                                <span id="stat-total-tracked" style="font-weight: 800;">0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; padding-bottom: 4px;">
+                                <span style="color: var(--text-secondary);">Target Streak Score</span>
+                                <span id="stat-streak-target-val" style="font-weight: 800; color: var(--accent);">70+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: CALENDAR -->
+            <section id="view-calendar" class="view-panel">
+                <div class="card">
+                    <div class="calendar-controls">
+                        <h2 class="card-title" id="calendar-month-year">June 2026</h2>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-icon" id="btn-calendar-prev" aria-label="Previous Month">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <button class="btn-icon" id="btn-calendar-next" aria-label="Next Month">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendar-grid-container">
+                        <!-- Calendar grid injected dynamically -->
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; gap: 16px; margin-top: 1.5rem; flex-wrap: wrap; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary);">
+                        <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background-color: var(--bg-surface); border: 1px solid var(--border-color); display: inline-block;"></span> No Log</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span class="score-low" style="width: 12px; height: 12px; border-radius: 3px; border: 1px solid transparent; display: inline-block;"></span> &lt; 50</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span class="score-medium" style="width: 12px; height: 12px; border-radius: 3px; border: 1px solid transparent; display: inline-block;"></span> 50 - 69</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span class="score-high" style="width: 12px; height: 12px; border-radius: 3px; border: 1px solid transparent; display: inline-block;"></span> 70 - 89</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span class="score-perfect" style="width: 12px; height: 12px; border-radius: 3px; display: inline-block;"></span> 90+</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: REWARDS -->
+            <section id="view-rewards" class="view-panel">
+                <div class="dashboard-grid">
+                    <!-- Left: Reward Redemption list and History -->
+                    <div style="display: flex; flex-direction: column; gap: 2rem;">
+                        <div class="card">
+                            <h2 class="card-title" style="margin-bottom: 1.25rem;">Redeem Rewards</h2>
+                            <div class="rewards-grid" id="rewards-redeem-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+                                <!-- Injected rewards -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h2 class="card-title" style="margin-bottom: 1.25rem;">Redemption History</h2>
+                            <div id="rewards-history-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 250px; overflow-y: auto;">
+                                <!-- Redeemed log items -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Balance, Manage Rewards (Locked) -->
+                    <div style="display: flex; flex-direction: column; gap: 2rem;">
+                        <!-- Balance Card -->
+                        <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-bg) 100%);">
+                            <h2 class="card-title" style="color: var(--accent); margin-bottom: 0.75rem;">Points Balance</h2>
+                            <div style="font-size: 3.5rem; font-weight: 800; color: var(--text-primary); line-height: 1;" id="points-balance-value">0</div>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 1rem; font-weight: 600;">
+                                Total Earned: <span id="points-total-earned">0</span> | Spent: <span id="points-total-spent">0</span>
+                            </p>
+                            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+                                Earn 1 point for every scoring percentage point logged daily!
+                            </p>
+                        </div>
+
+                        <!-- Add Reward (Locked) -->
+                        <div class="card parent-locked-overlay-container" id="card-add-reward">
+                            <div class="parent-locked-cover" style="display: none;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <span>Parent Lock Active</span>
+                                <button class="btn btn-secondary btn-sm" onclick="requestParentUnlock()" style="margin-top: 10px;">Unlock Settings</button>
+                            </div>
+                            <h2 class="card-title" style="margin-bottom: 1.25rem;">Create Reward</h2>
+                            <form id="form-add-reward" style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label" for="reward-name-input">Reward Name</label>
+                                    <input type="text" id="reward-name-input" class="form-input" placeholder="e.g. 1hr Video Games, Eat Ice Cream" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="reward-cost-input">Points Cost</label>
+                                    <input type="number" id="reward-cost-input" class="form-input" min="10" value="100" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="justify-content: center;">Add Reward</button>
+                            </form>
+                        </div>
+
+                        <!-- Manage Rewards List (Locked) -->
+                        <div class="card parent-locked-overlay-container" id="card-manage-rewards">
+                            <div class="parent-locked-cover" style="display: none;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <span>Parent Lock Active</span>
+                            </div>
+                            <h2 class="card-title" style="margin-bottom: 1.25rem;">Manage Rewards</h2>
+                            <div id="config-rewards-list" class="config-tracker-list">
+                                <!-- Managed rewards with delete button -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: MANAGE TRACKERS -->
+            <section id="view-trackers" class="view-panel">
+                <div class="dashboard-grid">
+                    <!-- Left: Create Tracker (Locked) -->
+                    <div class="card parent-locked-overlay-container" id="card-add-tracker">
+                        <div class="parent-locked-cover" style="display: none;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>Parent Lock Active</span>
+                            <button class="btn btn-secondary btn-sm" onclick="requestParentUnlock()" style="margin-top: 10px;">Unlock Trackers</button>
+                        </div>
+                        <h2 class="card-title" style="margin-bottom: 1.25rem;">Create New Tracker</h2>
+                        <form id="form-add-tracker" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label" for="tracker-name-input">Tracker Name</label>
+                                <input type="text" id="tracker-name-input" class="form-input" placeholder="e.g. Read Books, Water intake, Sleep Quality" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="tracker-type-select">Tracker Type</label>
+                                <select id="tracker-type-select" class="form-select">
+                                    <option value="habit">Habit / Checklist (Yes/No)</option>
+                                    <option value="rating">Mood / Rating (Scale)</option>
+                                    <option value="numeric">Custom Numeric (Any integer)</option>
+                                </select>
+                            </div>
+
+                            <!-- Rating Scale range configuration -->
+                            <div class="form-group" id="form-group-rating-scale" style="display: none;">
+                                <label class="form-label" for="tracker-rating-scale-input">Rating Limit (Max Score)</label>
+                                <input type="number" id="tracker-rating-scale-input" class="form-input" min="3" max="20" value="5">
+                                <p style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 500;">
+                                    Max rating value (e.g. 5 for 1-5, 10 for 1-10). Scales above 5 will render as interactive sliders.
+                                </p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="tracker-direction-select">Tracker Behavior</label>
+                                <select id="tracker-direction-select" class="form-select">
+                                    <option value="positive">Positive (adds points when done)</option>
+                                    <option value="negative">Negative (deducts points when done)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group" id="form-group-unit" style="display: none;">
+                                <label class="form-label" for="tracker-unit-input">Unit</label>
+                                <input type="text" id="tracker-unit-input" class="form-input" placeholder="e.g. ml, hours, steps">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="tracker-weight-input">Points Weight (Contribution)</label>
+                                <input type="number" id="tracker-weight-input" class="form-input" min="1" max="100" value="10" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; justify-content: center;">Add Tracker</button>
+                        </form>
+                    </div>
+
+                    <!-- Right: Active Trackers List (Locked) -->
+                    <div class="card parent-locked-overlay-container" id="card-active-trackers">
+                        <div class="parent-locked-cover" style="display: none;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>Parent Lock Active</span>
+                        </div>
+                        <h2 class="card-title" style="margin-bottom: 1.25rem;">Active Trackers</h2>
+                        <div id="config-trackers-list" class="config-tracker-list">
+                            <!-- Injected active trackers -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: RULES & CONFIG (SETTINGS) -->
+            <section id="view-config" class="view-panel">
+                <div class="dashboard-grid">
+                    <!-- Left: Parent Passcode Settings -->
+                    <div class="card">
+                        <h2 class="card-title" style="margin-bottom: 1.25rem;">Parent Lock Code</h2>
+                        <form id="form-parent-password" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label" for="parent-pass-input">New Password</label>
+                                <input type="password" id="parent-pass-input" class="form-input" placeholder="Enter new parent passcode" minlength="4">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="parent-pass-confirm">Confirm Password</label>
+                                <input type="password" id="parent-pass-confirm" class="form-input" placeholder="Confirm parent passcode">
+                            </div>
+                            <button type="submit" class="btn btn-secondary" style="justify-content: center;" id="btn-save-passcode">Set Passcode</button>
+                        </form>
+                        <p style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 8px; font-weight: 500;">
+                            Setting a passcode locks editing of trackers, weights, and rewards. Leave blank to disable lock security entirely.
+                        </p>
+                    </div>
+
+                    <!-- Right: System Config (Locked) -->
+                    <div class="card parent-locked-overlay-container" id="card-rules-config">
+                        <div class="parent-locked-cover" style="display: none;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>Parent Lock Active</span>
+                            <button class="btn btn-secondary btn-sm" onclick="requestParentUnlock()" style="margin-top: 10px;">Unlock Settings</button>
+                        </div>
+                        <h2 class="card-title" style="margin-bottom: 1.25rem;">Scoring Rules & Thresholds</h2>
+                        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                            <div class="form-group">
+                                <label class="form-label" for="overall-rating-weight">Manual Day Rating Weight (%)</label>
+                                <input type="number" id="overall-rating-weight" class="form-input" min="0" max="100" value="50">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="streak-target-score">Streak Target Score Threshold</label>
+                                <input type="number" id="streak-target-score" class="form-input" min="1" max="100" value="70">
+                            </div>
+                            <button id="btn-save-settings" class="btn btn-primary" style="justify-content: center;">Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Calendar View day details logger modal -->
+    <div class="modal-overlay" id="calendar-day-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="card-title" id="modal-date-title">June 15, 2026</h3>
+                <button class="btn-close" id="btn-modal-close" aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div id="modal-trackers-container" style="display: flex; flex-direction: column; gap: 1.25rem; max-height: 350px; overflow-y: auto; padding-right: 4px;">
+                <!-- Dynamically loaded trackers for the day -->
+            </div>
+            <div class="manual-rating-card" style="margin-top: 1.5rem;">
+                <div class="slider-container">
+                    <div class="slider-header">
+                        <span>Overall Day Rating</span>
+                        <span id="modal-manual-rating-value" style="color: var(--accent);">70/100</span>
+                    </div>
+                    <input type="range" id="modal-manual-rating-slider" class="range-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 2rem;">
+                <button class="btn btn-secondary" id="btn-modal-cancel">Cancel</button>
+                <button class="btn btn-primary" id="btn-modal-save">Save Log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent Password unlock prompt modal -->
+    <div class="modal-overlay" id="parent-lock-modal">
+        <div class="modal-content" style="max-width: 380px;">
+            <div class="modal-header">
+                <h3 class="card-title">Parent Lock</h3>
+                <button class="btn-close" id="btn-parent-modal-close" aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                Please enter the parent passcode to access configuration controls and custom rewards setup.
+            </p>
+            <form id="form-parent-unlock" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="form-group">
+                    <label class="form-label" for="parent-passcode-prompt">Parent Passcode</label>
+                    <input type="password" id="parent-passcode-prompt" class="form-input" placeholder="••••" required autofocus>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 0.5rem;">
+                    <button type="button" class="btn btn-secondary" id="btn-parent-modal-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Unlock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
