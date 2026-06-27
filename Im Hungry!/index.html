@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epicurean | Premium Restaurant Finder</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet.js Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- App Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-logo">
+                <div class="logo-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div class="logo-text">
+                    <h1>Epicurean</h1>
+                    <span>Bite & Savour Finder</span>
+                </div>
+            </div>
+
+            <div class="search-bar-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search by restaurant name, cuisine, or dishes...">
+                <button id="clear-search" class="clear-search-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="header-actions">
+                <button id="locate-btn" class="header-btn" title="Update Location">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    <span class="btn-text">Near Me</span>
+                </button>
+                <button id="favorites-toggle-btn" class="header-btn" title="View Saved Favorites">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="btn-text">Saved (<span id="fav-count">0</span>)</span>
+                </button>
+                <button id="theme-toggle-btn" class="header-btn" title="Toggle Light/Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button id="surprise-nav-btn" class="header-btn primary-btn pulse" title="Surprise Me!">
+                    <i class="fa-solid fa-circle-notch"></i>
+                    <span>Surprise Me</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <div class="app-body">
+            
+            <!-- Sidebar Filters -->
+            <aside class="sidebar-filters">
+                <div class="filter-section-header">
+                    <h2>Refine Search</h2>
+                    <button id="reset-filters-btn" class="reset-btn">Reset All</button>
+                </div>
+
+                <!-- Location Selector fallback -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-map-pin"></i> Search Location</label>
+                    <div class="location-select-wrapper">
+                        <select id="location-preset-select">
+                            <option value="current" selected>📍 GPS / Current Location</option>
+                            <option value="bangkok">Bangkok (Siam)</option>
+                            <option value="tokyo">Tokyo (Shibuya)</option>
+                            <option value="newyork">New York (Manhattan)</option>
+                            <option value="london">London (Soho)</option>
+                            <option value="paris">Paris (Le Marais)</option>
+                        </select>
+                    </div>
+                    <div class="custom-search-location-row">
+                        <input type="text" id="custom-location-input" placeholder="Type city/district in Thailand...">
+                        <button id="custom-location-btn" title="Search Location"><i class="fa-solid fa-location-arrow"></i></button>
+                    </div>
+                </div>
+
+                <!-- Travel Mode & Max Travel Time -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-route"></i> Travel Preference</label>
+                    <div class="travel-modes">
+                        <button class="travel-mode-btn active" data-mode="driving" title="Driving">
+                            <i class="fa-solid fa-car"></i>
+                        </button>
+                        <button class="travel-mode-btn" data-mode="walking" title="Walking">
+                            <i class="fa-solid fa-person-walking"></i>
+                        </button>
+                        <button class="travel-mode-btn" data-mode="cycling" title="Cycling">
+                            <i class="fa-solid fa-bicycle"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="range-slider-container">
+                        <div class="range-labels">
+                            <span>Search Radius:</span>
+                            <span id="radius-val">150 km</span>
+                        </div>
+                        <input type="range" id="radius-range" min="1" max="150" value="150" step="1">
+                    </div>
+                </div>
+
+                <!-- Price Range Filter (Slider) -->
+                <div class="filter-group">
+                    <div class="range-labels">
+                        <label class="filter-label"><i class="fa-solid fa-circle-dollar-to-slot"></i> Max Budget / Person</label>
+                        <span id="price-slider-val">$80</span>
+                    </div>
+                    <input type="range" id="price-budget-range" min="10" max="150" value="80" step="5">
+                </div>
+
+                <!-- Dining Options (Buffet / Alacarte / Deals) -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-utensils"></i> Dining Style & Deals</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-buffet" checked>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label"><i class="fa-solid fa-circle-nodes icon-tag"></i> Buffet</span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-alacarte" checked>
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label"><i class="fa-solid fa-receipt icon-tag"></i> A La Carte</span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-kids-discount">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label"><i class="fa-solid fa-baby icon-tag" style="color: var(--primary);"></i> Kids Discount</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Service Charge -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-hand-holding-dollar"></i> Service Charge</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-no-sc">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">No Service Charge (0%)</span>
+                        </label>
+                    </div>
+                    <div class="range-slider-container" id="sc-slider-wrapper">
+                        <div class="range-labels">
+                            <span>Max Service Charge:</span>
+                            <span id="sc-val">10%</span>
+                        </div>
+                        <input type="range" id="sc-range" min="0" max="15" value="10" step="1">
+                    </div>
+                </div>
+
+                <!-- Cuisine Filter -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-bowl-food"></i> Cuisines</label>
+                    <div class="cuisine-tags-container" id="cuisine-tags-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- Dietary Restrictions -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa-solid fa-leaf"></i> Dietary Filters</label>
+                    <div class="dietary-container">
+                        <button class="dietary-tag-btn" data-diet="vegan">Vegan</button>
+                        <button class="dietary-tag-btn" data-diet="vegetarian">Vegetarian</button>
+                        <button class="dietary-tag-btn" data-diet="gluten-free">Gluten-Free</button>
+                        <button class="dietary-tag-btn" data-diet="halal">Halal</button>
+                    </div>
+                </div>
+
+                <!-- Open Status -->
+                <div class="filter-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="filter-open-now">
+                        <span class="checkmark"></span>
+                        <span class="checkbox-label"><i class="fa-solid fa-clock-rotate-left"></i> Open Now Only</span>
+                    </label>
+                </div>
+                <!-- Google Maps Key config -->
+                <div class="filter-group" style="border-top: 1px dashed var(--border-color); padding-top: 16px; margin-top: 8px;">
+                    <label class="filter-label"><i class="fa-solid fa-key"></i> Google Maps API Key</label>
+                    <div class="api-key-wrapper" style="display: flex; gap: 8px;">
+                        <input type="password" id="gmaps-key-input" placeholder="Paste API Key here..." style="flex: 1; height: 36px; border: 1px solid var(--border-color); background: var(--bg-app); border-radius: var(--border-radius-sm); padding: 0 10px; font-family: inherit; font-size: 12px; outline: none; color: var(--text-primary);">
+                        <button id="save-key-btn" class="action-btn" style="margin: 0; height: 36px; padding: 0 12px; font-size: 12px;">Save</button>
+                    </div>
+                    <span style="font-size: 10px; color: var(--text-muted); line-height: 1.3;">Enables real storefront images from Google Maps Street View. Saved locally in your browser.</span>
+                </div>
+            </aside>
+
+            <!-- Main Display Area -->
+            <main class="main-content">
+                <div class="view-toggle-bar">
+                    <div class="results-info">
+                        Found <span id="results-count">0</span> restaurants nearby
+                    </div>
+                    <div class="sort-wrapper">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="distance" selected>Distance (Nearest)</option>
+                            <option value="rating">Rating (Highest)</option>
+                            <option value="price-low">Price (Low to High)</option>
+                            <option value="price-high">Price (High to Low)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Map and Card Grid Layout -->
+                <div class="split-view-container">
+                    
+                    <!-- Left Panel: Interactive Map -->
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                        <div class="map-overlay-message" id="map-message">
+                            <div class="spinner"></div>
+                            <p id="map-message-text">Detecting location and fetching local restaurants...</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Restaurant Cards -->
+                    <div class="list-wrapper">
+                        <div class="restaurant-grid" id="restaurant-list-container">
+                            <!-- Cards populated dynamically via JS -->
+                        </div>
+                        <div class="no-results-view" id="no-results" style="display: none;">
+                            <i class="fa-solid fa-cookie-bite"></i>
+                            <h3>No restaurants match your active filters.</h3>
+                            <p>Try clearing some search tags or increasing your travel distance preference.</p>
+                            <button id="clear-all-filters-shortcut" class="action-btn">Reset All Filters</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- 1. Restaurant Details Modal -->
+    <div class="modal-overlay" id="restaurant-detail-modal">
+        <div class="modal-content detail-modal-content">
+            <button class="close-modal-btn" id="close-detail-modal"><i class="fa-solid fa-xmark"></i></button>
+            
+            <!-- Modal Cover Banner -->
+            <div class="modal-banner" id="modal-banner-img">
+                <div class="banner-gradient"></div>
+                <div class="banner-quick-info">
+                    <span class="restaurant-badge" id="modal-badge-cuisine">Italian</span>
+                    <h2 id="modal-restaurant-name">La Dolce Vita</h2>
+                    <div class="rating-row">
+                        <span class="rating-stars" id="modal-rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        </span>
+                        <span class="rating-score" id="modal-rating-score">4.2</span>
+                        <span class="rating-reviews-count" id="modal-reviews-count">(45 reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body (Two columns) -->
+            <div class="modal-body-grid">
+                
+                <!-- Left Details & Menu -->
+                <div class="modal-main-details">
+                    <!-- Nav Tabs inside modal -->
+                    <div class="modal-tabs">
+                        <button class="modal-tab-btn active" data-tab="menu">Menu & Offerings</button>
+                        <button class="modal-tab-btn" data-tab="info">About & Reviews</button>
+                    </div>
+
+                    <!-- Tab 1: Menu Content -->
+                    <div class="modal-tab-pane active" id="pane-menu">
+                        <div class="menu-header" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                            <div class="dining-style-indicator">
+                                <span class="style-badge" id="modal-style-tag"><i class="fa-solid fa-receipt"></i> A La Carte</span>
+                                <span class="sc-badge" id="modal-sc-tag">10% Service Charge</span>
+                            </div>
+                            <div id="modal-kids-discount-banner" class="kids-discount-banner" style="display: none;">
+                                <i class="fa-solid fa-baby-carriage"></i> <span>Kids Offer: Kids under 8 eat free!</span>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-categories" id="menu-items-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Info & Reviews Content -->
+                    <div class="modal-tab-pane" id="pane-info">
+                        <div class="info-details-block">
+                            <h3><i class="fa-solid fa-circle-info"></i> Quick Information</h3>
+                            <div class="info-items-grid">
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                                    <div class="info-text">
+                                        <h4>Address</h4>
+                                        <p id="modal-address">123 Street Name, Neighborhood</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+                                    <div class="info-text">
+                                        <h4>Opening Hours</h4>
+                                        <p id="modal-hours">Open Daily: 11:00 AM - 10:00 PM</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-solid fa-wallet"></i></div>
+                                    <div class="info-text">
+                                        <h4>Pricing & Service</h4>
+                                        <p id="modal-pricing-sc">Average: $$ • 10% Service Charge</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                                    <div class="info-text">
+                                        <h4>Contact</h4>
+                                        <p id="modal-phone">+1 234-567-890</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- User Reviews section -->
+                        <div class="reviews-section">
+                            <h3><i class="fa-solid fa-comments"></i> Guest Reviews</h3>
+                            
+                            <!-- Add a review form -->
+                            <form id="add-review-form" class="review-form">
+                                <h4>Leave a Review</h4>
+                                <div class="form-rating-row">
+                                    <span>Your Rating:</span>
+                                    <div class="star-rating-input">
+                                        <input type="radio" id="star5" name="user-rating" value="5" required><label for="star5" title="5 stars"><i class="fa-solid fa-star"></i></label>
+                                        <input type="radio" id="star4" name="user-rating" value="4"><label for="star4" title="4 stars"><i class="fa-solid fa-star"></i></label>
+                                        <input type="radio" id="star3" name="user-rating" value="3"><label for="star3" title="3 stars"><i class="fa-solid fa-star"></i></label>
+                                        <input type="radio" id="star2" name="user-rating" value="2"><label for="star2" title="2 stars"><i class="fa-solid fa-star"></i></label>
+                                        <input type="radio" id="star1" name="user-rating" value="1"><label for="star1" title="1 star"><i class="fa-solid fa-star"></i></label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="review-author" placeholder="Your Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="review-comment" rows="3" placeholder="Describe your dining experience..." required></textarea>
+                                </div>
+                                <button type="submit" class="submit-review-btn">Submit Review</button>
+                            </form>
+
+                            <!-- Reviews list container -->
+                            <div class="reviews-list" id="modal-reviews-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar Reservation Simulator -->
+                <div class="modal-reservation-sidebar">
+                    <div class="reservation-card">
+                        <h3>Book a Table</h3>
+                        <p class="reservation-subtitle">Simulate real-time instant booking reservation.</p>
+                        
+                        <form id="reservation-form">
+                            <div class="form-group">
+                                <label for="res-date"><i class="fa-regular fa-calendar"></i> Date</label>
+                                <input type="date" id="res-date" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="res-time"><i class="fa-regular fa-clock"></i> Time</label>
+                                <select id="res-time" required>
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="12:00">12:00 PM</option>
+                                    <option value="12:30">12:30 PM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="13:30">1:30 PM</option>
+                                    <option value="17:30">5:30 PM</option>
+                                    <option value="18:00">6:00 PM</option>
+                                    <option value="18:30">6:30 PM</option>
+                                    <option value="19:00" selected>7:00 PM</option>
+                                    <option value="19:30">7:30 PM</option>
+                                    <option value="20:00">8:00 PM</option>
+                                    <option value="20:30">8:30 PM</option>
+                                    <option value="21:00">9:00 PM</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="res-guests"><i class="fa-solid fa-users"></i> Guests</label>
+                                <select id="res-guests" required>
+                                    <option value="1">1 Person</option>
+                                    <option value="2" selected>2 People</option>
+                                    <option value="3">3 People</option>
+                                    <option value="4">4 People</option>
+                                    <option value="5">5 People</option>
+                                    <option value="6">6 People</option>
+                                    <option value="7">7 People</option>
+                                    <option value="8">8+ People (Large Party)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="res-special"><i class="fa-regular fa-comment-dots"></i> Special Request (Optional)</label>
+                                <textarea id="res-special" placeholder="e.g. Window seat, allergic to peanuts, celebrating birthday..."></textarea>
+                            </div>
+
+                            <button type="submit" class="book-now-btn">
+                                <span class="btn-main-text">Book Free Reservation</span>
+                                <span class="btn-sub-text">No credit card required</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Travel Time Widget -->
+                    <div class="travel-widget-card">
+                        <h3><i class="fa-solid fa-location-arrow"></i> How to Get There</h3>
+                        <div class="travel-matrix">
+                            <div class="travel-option active-option" id="travel-widget-driving">
+                                <i class="fa-solid fa-car"></i>
+                                <span class="mode-label">Drive</span>
+                                <span class="mode-duration" id="widget-time-drive">-- mins</span>
+                            </div>
+                            <div class="travel-option" id="travel-widget-walking">
+                                <i class="fa-solid fa-person-walking"></i>
+                                <span class="mode-label">Walk</span>
+                                <span class="mode-duration" id="widget-time-walk">-- mins</span>
+                            </div>
+                            <div class="travel-option" id="travel-widget-cycling">
+                                <i class="fa-solid fa-bicycle"></i>
+                                <span class="mode-label">Cycle</span>
+                                <span class="mode-duration" id="widget-time-cycle">-- mins</span>
+                            </div>
+                        </div>
+                        <p class="travel-details-text">Estimated distance: <strong id="widget-distance">-- km</strong></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Surprise Me Roulette Modal -->
+    <div class="modal-overlay" id="surprise-modal">
+        <div class="modal-content surprise-modal-content">
+            <button class="close-modal-btn" id="close-surprise-modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2>Taste Roulette</h2>
+            <p>Can't decide? Let the culinary wheel choose your next dining adventure!</p>
+            
+            <div class="wheel-outer-container">
+                <div class="wheel-pointer"><i class="fa-solid fa-caret-down"></i></div>
+                <div class="wheel-spinner-container">
+                    <canvas id="wheel-canvas" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="wheel-controls">
+                <button id="spin-wheel-btn" class="wheel-btn">SPIN THE WHEEL</button>
+                <div class="selection-display" id="wheel-selection-name">Click Spin to start!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Reservation Confirmation Modal -->
+    <div class="modal-overlay" id="booking-confirm-modal">
+        <div class="modal-content confirm-modal-content">
+            <div class="confirm-checkmark">
+                <div class="checkmark-circle"></div>
+                <div class="checkmark-stem"></div>
+                <div class="checkmark-kick"></div>
+            </div>
+            <h2>Reservation Confirmed!</h2>
+            <p class="confirm-message-subtitle">Your table has been reserved successfully.</p>
+            
+            <div class="booking-receipt" id="booking-receipt-details">
+                <!-- Details injected via JS -->
+            </div>
+            
+            <button id="close-confirm-btn" class="confirm-close-btn">Done</button>
+        </div>
+    </div>
+
+    <!-- Leaflet JS Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- App Custom Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
